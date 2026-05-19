@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 import UpdateAppointmentModal from './UpdateAppointmentModal';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendar, faClock } from "@fortawesome/free-regular-svg-icons";
 
 const BookingCard = ({ doctorName, specialty, doctorImage, patientName, date, time, reason }) => {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -13,7 +16,7 @@ const BookingCard = ({ doctorName, specialty, doctorImage, patientName, date, ti
                         <h3 className="font-headline-md text-headline-md text-primary mb-1">{doctorName}</h3>
                         <span className="text-label-sm font-label-sm text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full">{specialty}</span>
                     </div>
-                    <img alt="Doctor profile" className="w-12 h-12 rounded-lg bg-surface-container-high object-cover" src={doctorImage}/>
+                    <Image alt="Doctor profile" className="rounded-lg bg-surface-container-high object-cover" src={doctorImage} width={48} height={48} />
                 </div>
                 <div className="space-y-3 mb-6 flex-grow">
                     <div className="flex items-center text-on-surface-variant">
@@ -21,11 +24,11 @@ const BookingCard = ({ doctorName, specialty, doctorImage, patientName, date, ti
                         <span className="text-body-sm font-body-sm">Patient: <span className="font-medium text-on-surface">{patientName}</span></span>
                     </div>
                     <div className="flex items-center text-on-surface-variant">
-                        <span className="material-symbols-outlined mr-2 text-[20px]">calendar_today</span>
+                        <FontAwesomeIcon icon={faCalendar} className="mr-2 text-[16px] w-5" />
                         <span className="text-body-sm font-body-sm">Date: <span className="font-medium text-on-surface">{date}</span></span>
                     </div>
                     <div className="flex items-center text-on-surface-variant">
-                        <span className="material-symbols-outlined mr-2 text-[20px]">schedule</span>
+                        <FontAwesomeIcon icon={faClock} className="mr-2 text-[16px] w-5" />
                         <span className="text-body-sm font-body-sm">Time: <span className="font-medium text-on-surface">{time}</span></span>
                     </div>
                     <div className="flex items-start text-on-surface-variant">

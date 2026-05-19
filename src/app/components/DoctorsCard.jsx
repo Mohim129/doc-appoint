@@ -1,11 +1,17 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const DoctorsCard = ({ doctor }) => {
   return (
     <div className="bg-surface-container-lowest rounded-xl overflow-hidden doctor-card-shadow border border-outline-variant/30 flex flex-col group hover:-translate-y-1 transition-transform duration-300">
       <div className="relative h-64 overflow-hidden">
-        <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={doctor.name} src={doctor.image} />
+        <Image
+          src={doctor.image}
+          alt={doctor.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+        />
         <div className="absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
           <span className="material-symbols-outlined text-secondary text-sm" data-icon="star" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
           <span className="font-label-md text-label-md text-on-surface">{doctor.rating}</span>

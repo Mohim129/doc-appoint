@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import BookingCard from '@/app/components/BookingCard';
 import UpdateProfileModal from '@/app/components/UpdateProfileModal';
 
@@ -39,77 +40,97 @@ const DashboardPage = () => {
     ];
 
     return (
-        <div className="bg-background text-on-background font-body-md min-h-screen">
-            <main className="pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-screen pt-12 flex flex-col items-center">
-                <div className="mb-8 text-center flex flex-col items-center">
-                    <h1 className="font-headline-lg text-headline-lg text-on-surface mb-6">Dashboard</h1>
-                    
-                    <div className="flex items-center bg-surface-container-low p-1.5 rounded-xl w-fit">
-                        <button 
-                            className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === 'bookings' ? 'bg-surface-container text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-variant/30'}`}
-                            onClick={() => setActiveTab('bookings')}
-                        >
-                            My Bookings
-                        </button>
-                        <button 
-                            className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === 'profile' ? 'bg-surface-container text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-variant/30'}`}
-                            onClick={() => setActiveTab('profile')}
-                        >
-                            My Profile
-                        </button>
+      <div className="bg-background text-on-background font-body-md min-h-screen">
+        <main className="pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-screen pt-12 flex flex-col items-center">
+          <div className="mb-8 text-center flex flex-col items-center">
+            <h1 className="font-headline-lg text-headline-lg text-on-surface mb-6">
+              Dashboard
+            </h1>
+
+            <div className="flex items-center bg-surface-container-low p-1.5 rounded-xl w-fit">
+              <button
+                className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "bookings" ? "bg-surface-container text-primary font-semibold" : "text-on-surface-variant hover:bg-surface-variant/30"}`}
+                onClick={() => setActiveTab("bookings")}
+              >
+                My Bookings
+              </button>
+              <button
+                className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "profile" ? "bg-surface-container text-primary font-semibold" : "text-on-surface-variant hover:bg-surface-variant/30"}`}
+                onClick={() => setActiveTab("profile")}
+              >
+                My Profile
+              </button>
+            </div>
+          </div>
+
+          {activeTab === "bookings" && (
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-gutter lg:grid-cols-2 max-w-4xl mx-auto w-full">
+              {bookings.map((booking, index) => (
+                <BookingCard key={index} {...booking} />
+              ))}
+            </section>
+          )}
+
+          {activeTab === "profile" && (
+            <section className="w-full">
+              <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-sm border border-surface-container-high max-w-2xl mx-auto">
+                <div className="flex items-center mb-8 pb-8 border-b border-surface-variant text-center flex-col">
+                  <div className="relative">
+                    <Image
+                      alt="User Profile"
+                      className="rounded-full bg-primary-container object-cover border-4 border-surface-container-lowest shadow-md"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZvuEnlX2Lp27BL_oH0XxHzHzJxY6l_YMYsrOQtLc9x8d-6xra51vUzbML9O75cFmhVblPXmFdDdjXn_aQrOEJga_ctX-t5SNgJets3bzKt7RlREDFzRqOw7Y2Jf4tDsgQw7IOo2TSmcoMsFj31AZkpSgIbLDNMZcpe-0CHgpr37_3HFnRfQbJJV6y8q_vr7v_IsdCHag-JdH5YUDNXRDEjaQB5QFmaeQTWO4AetPR9LcUeaZ8X7xyLig-L9RE5RF1_NSfyx8pC4Cc"
+                      width={80}
+                      height={80}
+                    />
+                    <div className="ml-6 mt-4">
+                      <h2 className="font-headline-md text-headline-md text-on-surface">
+                        User
+                      </h2>
+                      <p className="text-on-surface-variant font-body-md">
+                        Verified Patient ID: #29481
+                      </p>
                     </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-1">
+                      <label className="font-label-md text-label-md text-on-surface-variant">
+                        Full Name
+                      </label>
+                      <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">
+                        User
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-label-md text-label-md text-on-surface-variant">
+                        Email Address
+                      </label>
+                      <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">
+                        user.user@example.com
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-10 flex justify-center w-full">
+                    <button
+                      className="bg-primary text-on-primary px-8 py-3 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all"
+                      onClick={() => setIsProfileModalOpen(true)}
+                    >
+                      Update Profile
+                    </button>
+                  </div>
                 </div>
+              </div>
+            </section>
+          )}
+        </main>
 
-                {activeTab === 'bookings' && (
-                    <section className="grid grid-cols-1 md:grid-cols-2 gap-gutter lg:grid-cols-2 max-w-4xl mx-auto w-full">
-                        {bookings.map((booking, index) => (
-                            <BookingCard key={index} {...booking} />
-                        ))}
-                    </section>
-                )}
-
-                {activeTab === 'profile' && (
-                    <section className="w-full">
-                        <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-sm border border-surface-container-high max-w-2xl mx-auto">
-                            <div className="flex items-center mb-8 pb-8 border-b border-surface-variant text-center flex-col">
-                                <div className="relative">
-                                    <img alt="User Profile" className="w-20 h-20 rounded-full bg-primary-container object-cover border-4 border-surface-container-lowest shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZvuEnlX2Lp27BL_oH0XxHzHzJxY6l_YMYsrOQtLc9x8d-6xra51vUzbML9O75cFmhVblPXmFdDdjXn_aQrOEJga_ctX-t5SNgJets3bzKt7RlREDFzRqOw7Y2Jf4tDsgQw7IOo2TSmcoMsFj31AZkpSgIbLDNMZcpe-0CHgpr37_3HFnRfQbJJV6y8q_vr7v_IsdCHag-JdH5YUDNXRDEjaQB5QFmaeQTWO4AetPR9LcUeaZ8X7xyLig-L9RE5RF1_NSfyx8pC4Cc"/>
-                                </div>
-                                <div className="ml-6 mt-4">
-                                    <h2 className="font-headline-md text-headline-md text-on-surface">Gfadsgh User</h2>
-                                    <p className="text-on-surface-variant font-body-md">Verified Patient ID: #29481</p>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-1">
-                                    <label className="font-label-md text-label-md text-on-surface-variant">Full Name</label>
-                                    <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">Gfadsgh User</div>
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="font-label-md text-label-md text-on-surface-variant">Email Address</label>
-                                    <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">user.gfadsgh@example.com</div>
-                                </div>
-                            </div>
-                            <div className="mt-10 flex justify-center w-full">
-                                <button 
-                                    className="bg-primary text-on-primary px-8 py-3 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all"
-                                    onClick={() => setIsProfileModalOpen(true)}
-                                >
-                                    Update Profile
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-                )}
-            </main>
-
-            <UpdateProfileModal 
-                isOpen={isProfileModalOpen} 
-                onClose={() => setIsProfileModalOpen(false)} 
-                initialName="Gfadsgh User"
-                initialImage="https://lh3.googleusercontent.com/aida-public/AB6AXuBZvuEnlX2Lp27BL_oH0XxHzHzJxY6l_YMYsrOQtLc9x8d-6xra51vUzbML9O75cFmhVblPXmFdDdjXn_aQrOEJga_ctX-t5SNgJets3bzKt7RlREDFzRqOw7Y2Jf4tDsgQw7IOo2TSmcoMsFj31AZkpSgIbLDNMZcpe-0CHgpr37_3HFnRfQbJJV6y8q_vr7v_IsdCHag-JdH5YUDNXRDEjaQB5QFmaeQTWO4AetPR9LcUeaZ8X7xyLig-L9RE5RF1_NSfyx8pC4Cc"
-            />
-        </div>
+        <UpdateProfileModal
+          isOpen={isProfileModalOpen}
+          onClose={() => setIsProfileModalOpen(false)}
+          initialName="Gfadsgh User"
+          initialImage="https://lh3.googleusercontent.com/aida-public/AB6AXuBZvuEnlX2Lp27BL_oH0XxHzHzJxY6l_YMYsrOQtLc9x8d-6xra51vUzbML9O75cFmhVblPXmFdDdjXn_aQrOEJga_ctX-t5SNgJets3bzKt7RlREDFzRqOw7Y2Jf4tDsgQw7IOo2TSmcoMsFj31AZkpSgIbLDNMZcpe-0CHgpr37_3HFnRfQbJJV6y8q_vr7v_IsdCHag-JdH5YUDNXRDEjaQB5QFmaeQTWO4AetPR9LcUeaZ8X7xyLig-L9RE5RF1_NSfyx8pC4Cc"
+        />
+      </div>
     );
 };
 

@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import BookingModal from '@/app/components/BookingModal';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 const DoctorProfilePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,11 +25,14 @@ const DoctorProfilePage = () => {
 
                     <div className="lg:col-span-5 relative group">
                         <div className="absolute -inset-4 bg-primary/5 rounded-[2rem] -z-10 transition-transform group-hover:scale-105"></div>
-                        <img 
-                            alt="Dr. Nadia Akter portrait" 
-                            className="w-full aspect-[4/5] object-cover rounded-[1.5rem] shadow-lg border-4 border-surface-container-lowest" 
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPzYO4I7eG_RXRH5TfDZeK4tTGa2y9Dr9S3FjGRT7LQCIRHDGoDTjwQvQO4cfqSQSlZWj8ZaT6yOEyHRFYQEt1M9bGMCK4q_EmSPOfKNp6VW9VcBH-Re7dsJRGMcH5mRRItSC8sZLWa0AqkxRpwYN6lpMYX4kYuupdXy7tn7aV5DzpMyjnbM7_FVMRCTx2JJ2s0pBHp8tO1rkxiI6HOIqFjmV92v2PxtxjgCRzixwJdQtyuIWrqq0IeG0CAaNZBFEVziRmn1Xv4vxC"
-                        />
+                        <div className="w-full aspect-[4/5] relative rounded-[1.5rem] shadow-lg border-4 border-surface-container-lowest overflow-hidden">
+                            <Image
+                                alt="Dr. Nadia Akter portrait"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPzYO4I7eG_RXRH5TfDZeK4tTGa2y9Dr9S3FjGRT7LQCIRHDGoDTjwQvQO4cfqSQSlZWj8ZaT6yOEyHRFYQEt1M9bGMCK4q_EmSPOfKNp6VW9VcBH-Re7dsJRGMcH5mRRItSC8sZLWa0AqkxRpwYN6lpMYX4kYuupdXy7tn7aV5DzpMyjnbM7_FVMRCTx2JJ2s0pBHp8tO1rkxiI6HOIqFjmV92v2PxtxjgCRzixwJdQtyuIWrqq0IeG0CAaNZBFEVziRmn1Xv4vxC"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
                     </div>
 
                     <div className="lg:col-span-7 flex flex-col gap-6 lg:pl-8">
@@ -49,7 +55,7 @@ const DoctorProfilePage = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant flex items-center gap-4 hover:shadow-md transition-shadow">
                                 <div className="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                                    <span className="material-symbols-outlined">schedule</span>
+                                    <FontAwesomeIcon icon={faClock} className="text-xl" />
                                 </div>
                                 <div>
                                     <p className="text-label-sm text-on-surface-variant">Experience</p>

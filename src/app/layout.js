@@ -41,8 +41,7 @@ const RootLayout = ({ children }) => {
               (function() {
                 try {
                   const storedTheme = localStorage.getItem('theme');
-                  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                  const theme = storedTheme || systemTheme;
+                  const theme = storedTheme || 'light';
                   if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
                   } else {
