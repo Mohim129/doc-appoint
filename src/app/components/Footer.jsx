@@ -1,4 +1,7 @@
+import Link from "next/link";
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebook, faInstagram, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
@@ -20,88 +23,30 @@ const Footer = () => {
             Book trusted doctors near you, manage appointments, and take charge
             of your health.
           </p>
-          <div className="flex gap-4">
-            <a
-              className="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-secondary transition-all shadow-sm"
-              href="#"
-            >
-              <span
-                className="material-symbols-outlined text-xl"
-                data-icon="facebook"
-              >
-                social_leaderboard
-              </span>
-            </a>
-            <a
-              className="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-secondary transition-all shadow-sm"
-              href="#"
-            >
-              <span
-                className="material-symbols-outlined text-xl"
-                data-icon="alternate_email"
-              >
-                alternate_email
-              </span>
-            </a>
-            <a
-              className="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-secondary transition-all shadow-sm"
-              href="#"
-            >
-              <span
-                className="material-symbols-outlined text-xl"
-                data-icon="camera"
-              >
-                camera
-              </span>
-            </a>
-            <a
-              className="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-secondary transition-all shadow-sm"
-              href="#"
-            >
-              <span
-                className="material-symbols-outlined text-xl"
-                data-icon="share"
-              >
-                share
-              </span>
-            </a>
-          </div>
         </div>
         <div>
           <h4 className="font-label-md text-label-md text-on-surface mb-6">
             Quick Links
           </h4>
           <nav className="flex flex-col gap-4">
-            <a
+            <Link
               className="text-on-surface-variant hover:text-primary hover:underline transition-all font-body-sm text-body-sm"
-              href="#"
+              href="/"
             >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               className="text-on-surface-variant hover:text-primary hover:underline transition-all font-body-sm text-body-sm"
-              href="#"
+              href="/appointments"
             >
               All Appointments
-            </a>
-            <a
+            </Link>
+            <Link
               className="text-on-surface-variant hover:text-primary hover:underline transition-all font-body-sm text-body-sm"
-              href="#"
+              href="/dashboard"
             >
               Dashboard
-            </a>
-            <a
-              className="text-on-surface-variant hover:text-primary hover:underline transition-all font-body-sm text-body-sm"
-              href="#"
-            >
-              Terms of Service
-            </a>
-            <a
-              className="text-on-surface-variant hover:text-primary hover:underline transition-all font-body-sm text-body-sm"
-              href="#"
-            >
-              Privacy Policy
-            </a>
+            </Link>
           </nav>
         </div>
         <div>
@@ -120,6 +65,26 @@ const Footer = () => {
             <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md hover:bg-surface-tint transition-all">
               Join
             </button>
+          </div>
+          <div className="flex gap-4 mt-6">
+            <a
+              className="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-primary transition-all shadow-sm text-lg p-2"
+              aria-label="Facebook"
+            >
+              <FontAwesomeIcon icon={faFacebook} />
+            </a>
+            <a
+              className="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-primary transition-all shadow-sm text-lg p-2"
+              aria-label="Instagram"
+            >
+              <FontAwesomeIcon icon={faInstagram} />
+            </a>
+            <a
+              className="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-primary transition-all shadow-sm text-lg p-2"
+              aria-label="X"
+            >
+              <FontAwesomeIcon icon={faXTwitter} />
+            </a>
           </div>
         </div>
       </footer>

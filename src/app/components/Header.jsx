@@ -7,11 +7,16 @@ import { usePathname } from 'next/navigation';
 const Header = () => {
   const pathname = usePathname();
   const [theme, setTheme] = useState('light');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
 
   useEffect(() => {
-    // Determine theme from document class
     const isDark = document.documentElement.classList.contains('dark');
-    setTheme(isDark ? 'dark' : 'light');
+    const currentTheme = isDark ? 'dark' : 'light';
+    
+    if (currentTheme !== 'light') {
+      setTimeout(() => setTheme(currentTheme), 0);
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -56,10 +61,10 @@ const Header = () => {
           );
         })}
       </nav>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-full hover:bg-surface-container-low transition-all duration-200 text-on-surface-variant hover:text-primary cursor-pointer"
+          className="hidden md:block p-2 rounded-full hover:bg-surface-container-low transition-all duration-200 text-on-surface-variant hover:text-primary cursor-pointer"
           aria-label="Toggle theme"
         >
           <span
@@ -69,12 +74,51 @@ const Header = () => {
             {theme === 'dark' ? 'light_mode' : 'dark_mode'}
           </span>
         </button>
-        <div className="flex items-center gap-3 pl-4 border-l border-outline-variant">
+        <div className="hidden md:flex items-center gap-3 pl-4 border-l border-outline-variant">
           <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-all active:scale-95">
             Logout
           </button>
         </div>
+        <button 
+          className="md:hidden p-2 rounded-full hover:bg-surface-container-low transition-all text-on-surface-variant cursor-pointer ml-2" 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <span className="material-symbols-outlined">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+        </button>
       </div>
+
+      {isMobileMenuOpen && (
+        <div className="absolute top-full left-0 w-full bg-surface shadow-lg border-t border-outline-variant md:hidden">
+          <nav className="flex flex-col py-4 px-margin-mobile gap-4">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`font-label-md text-label-md transition-all duration-200 py-2 ${
+                    isActive
+                      ? 'text-primary font-bold'
+                      : 'text-on-surface-variant'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <div className="pt-4 border-t border-outline-variant flex justify-between items-center">
+               <span className="font-label-md text-on-surface-variant">Theme</span>
+               <button onClick={toggleTheme} className="p-2 rounded-full bg-surface-container-low hover:bg-surface-container transition-all duration-200 text-on-surface-variant hover:text-primary">
+                  <span className="material-symbols-outlined" data-icon={theme === 'dark' ? 'light_mode' : 'dark_mode'}>{theme === 'dark' ? 'light_mode' : 'dark_mode'}</span>
+               </button>
+            </div>
+            <button className="bg-primary text-on-primary w-full py-3 rounded-lg font-label-md text-label-md hover:bg-surface-tint mt-2 active:scale-95 transition-all">
+              Logout
+            </button>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };

@@ -32,7 +32,6 @@ const WhyChooseUsSection = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Setup window size checking
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -56,14 +55,13 @@ const WhyChooseUsSection = () => {
           <h2 className="font-headline-lg text-headline-lg text-on-surface mb-2">Why Choose DocAppoint?</h2>
           <p className="font-body-md text-body-md text-on-surface-variant">Built around your health and your time.</p>
         </div>
-        
-        {/* Carousel Outer Wrapper */}
+
         <div 
           className="w-full overflow-hidden md:overflow-visible py-4"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Carousel Track */}
+
           <div
             className="flex md:flex-row transition-transform duration-500 ease-in-out md:transform-none md:w-full md:justify-center md:gap-4 lg:gap-8"
             style={{
@@ -102,8 +100,6 @@ const WhyChooseUsSection = () => {
             })}
           </div>
         </div>
-
-        {/* Carousel Dots */}
         <div className="flex justify-center gap-2 mt-12">
           {cards.map((_, index) => {
             const isActive = index === activeIndex;

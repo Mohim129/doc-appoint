@@ -30,8 +30,8 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
             className={`${isOpen ? 'flex' : 'hidden'} fixed inset-0 z-[100] items-center justify-center px-4 backdrop-blur-[8px] bg-[#181c22]/40 transition-all duration-300`} 
             id="bookingModal"
         >
-            <div className="bg-white w-full max-w-2xl max-h-[90vh] flex flex-col rounded-3xl shadow-2xl overflow-hidden relative">
-                {/* Close Button */}
+            <div className="bg-surface-container-lowest w-full max-w-2xl max-h-[90vh] flex flex-col rounded-3xl shadow-2xl overflow-hidden relative">
+
                 <button 
                     className="absolute top-6 right-6 p-2 rounded-full hover:bg-surface-container transition-all text-on-surface-variant z-20" 
                     onClick={onClose}
@@ -40,13 +40,11 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
                     <span className="material-symbols-outlined">close</span>
                 </button>
 
-                {/* Header */}
-                <div className="p-8 pb-4 border-b border-surface-container shrink-0 z-10 bg-white">
+                <div className="p-8 pb-4 border-b border-surface-container shrink-0 z-10 bg-surface-container-lowest">
                     <h2 className="text-headline-md font-headline-md text-on-surface mb-1">Book Appointment</h2>
                     <p className="text-body-md text-on-surface-variant">with <span className="text-primary font-bold">{doctorName}</span></p>
                 </div>
 
-                {/* Form */}
                 <form className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto" onSubmit={handleBookingSubmit}>
                     <div className="flex flex-col gap-2">
                         <label className="text-label-md font-label-md text-on-surface">User Email</label>
@@ -62,7 +60,7 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
                     </div>
                     <div className="flex flex-col gap-2">
                         <label className="text-label-md font-label-md text-on-surface">Gender *</label>
-                        <select className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white" required defaultValue="">
+                        <select className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest" required defaultValue="">
                             <option value="" disabled>Select gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>

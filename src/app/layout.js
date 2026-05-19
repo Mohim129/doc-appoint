@@ -1,4 +1,5 @@
 import React from "react";
+import Script from "next/script";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
@@ -22,13 +23,19 @@ export const metadata = {
 
 const RootLayout = ({ children }) => {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
-        <script
+      </head>
+      <body
+        className={`${inter.variable} ${plusJakarta.variable} antialiased bg-background text-on-surface font-body-md`}
+      >
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -46,10 +53,6 @@ const RootLayout = ({ children }) => {
             `,
           }}
         />
-      </head>
-      <body
-        className={`${inter.variable} ${plusJakarta.variable} antialiased bg-background text-on-surface font-body-md`}
-      >
         <Header />
         <main>{children}</main>
         <Footer />
