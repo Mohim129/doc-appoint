@@ -1,147 +1,194 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useSession } from '@/lib/auth-client';
-import BookingCard from '@/app/components/BookingCard';
-import UpdateProfileModal from '@/app/components/UpdateProfileModal';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
+import BookingCard from "@/app/components/BookingCard";
+import UpdateProfileModal from "@/app/components/UpdateProfileModal";
+import toast from "react-hot-toast";
+
+const apiBase = process.env.NEXT_PUBLIC_API_URL;
 
 const DashboardPage = () => {
-    const router = useRouter();
-    const { data: session, isPending } = useSession();
-    const [activeTab, setActiveTab] = useState('bookings');
-    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
+  const user = session?.user ?? null;
 
-    useEffect(() => {
-      if (!isPending && !session) {
-        router.replace('/signin?callbackUrl=/dashboard');
+  const [activeTab, setActiveTab] = useState("bookings");
+  const [bookings, setBookings] = useState([]);
+  const [loadingBookings, setLoadingBookings] = useState(true);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!isPending && !user) {
+      router.replace("/signin?callbackUrl=/dashboard");
+    }
+  }, [isPending, user, router]);
+
+  // Fetch user's appointments
+  useEffect(() => {
+    if (!user) return;
+    const fetchAppointments = async () => {
+      try {
+        const res = await fetch(
+          `${apiBase}/appointments?userEmail=${encodeURIComponent(user.email)}`,
+        );
+        if (!res.ok) throw new Error("Failed to fetch appointments");
+        const data = await res.json();
+        setBookings(data);
+      } catch (err) {
+        toast.error("Could not load appointments");
+        console.error(err);
+      } finally {
+        setLoadingBookings(false);
       }
-    }, [isPending, session, router]);
+    };
+    fetchAppointments();
+  }, [user]);
 
-    const bookings = [
-        {
-            doctorName: "Dr. Imran Hossain",
-            specialty: "General Physician",
-            doctorImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuDXH_bUwXKA_jeeKwrDZ8PAKrJFmHI9Rt8L8F9NTdFkrSDqEr4cCQ2W6mj7FAvx5u2GAN29B4UN9uM82gJlJBHR47XfQwlqCXrTk4JkE-g3gaJ_7zE0zbFh8LGWEFhYFP45Fp0XOfU3uk2zpcuY9vYJF-KJ359IytIJai-G7mEiaCYJU9Rrms1xfIYmkLayESaIehROHrSr_7djiI2lt6CWpIaWFjflE00fFRhvyxXu2wOycDT-52tZGRaz5RZenbAQzpHnURoH12L7",
-            patientName: "Gfadsgh User",
-            date: "2026-05-24",
-            time: "19:30",
-            reason: "Routine health checkup and annual wellness review."
-        },
-        {
-            doctorName: "Dr. Sabrina Yasmin",
-            specialty: "Cardiologist",
-            doctorImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuCrv3YI3q9Fcvwv0wl5pQKLX53LEtXZCx0FFJkAryKl8IzVGdFiRzfEwft9RzlPmrKnqqCMm4jtDEVuHyaG5FODlAjg2tQkQemT0M-CGRsDlrghaz4Yl7q79YiBlvG4N879Ez7xqyUHsSJaaSStLGO1uilAlTXmy_PuSG6Pndu0C5Y2Gz32FH8kDPVVQTTlgcdCYNeWQU-0QWcEY8XzaICX3NNbdeZaqbmaKQqHWubvCgu0-69XRNO8_N84-4KeoYSSwTOi9MrM8-ha",
-            patientName: "Gfadsgh User",
-            date: "2026-05-21",
-            time: "23:00",
-            reason: "Follow-up for blood pressure medication review."
-        },
-        {
-            doctorName: "Dr. Nadia Akter",
-            specialty: "Pediatrician",
-            doctorImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHipMWNqU2faWHj38iXLTa9C6Nc7tc7JO3pQt-p6pqwoM9MYwEnx0PNHvBAcqKSUNeZqsMydecmqyaMUuLBgqqosU77o1oMHrVOZodcbwi1I3aTf4yZmljuR_lha9XaLNJZBI7O6_9GC6mU9YGVJF5dRS1eXW58RpMuvChb158IYn5q6uxIYzmchc71dG9kL2pg7EZNzajiC4Il3mX-tBI5L8EFgbuyf-gmY4p4Fe2R1P0-BD1kEtwWWO3xl8TL3rN-Zg9f9FpjnBU",
-            patientName: "Gfadsgh User",
-            date: "2026-05-08",
-            time: "20:30",
-            reason: "Sudden onset of mild fever and dry cough."
-        }
-    ];
+  // Delete appointment handler (passed to BookingCard)
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`${apiBase}/appointments/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Delete failed");
+      setBookings((prev) => prev.filter((b) => b._id !== id));
+      toast.success("Appointment deleted successfully!");
+    } catch (err) {
+      toast.error("Failed to delete appointment");
+      console.error(err);
+    }
+  };
 
-    return (
-      <div className="bg-background text-on-background font-body-md min-h-screen">
-        <main className="pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-screen pt-12 flex flex-col items-center">
-          <div className="mb-8 text-center flex flex-col items-center">
-            <h1 className="font-headline-lg text-headline-lg text-on-surface mb-6">
-              Dashboard
-            </h1>
+  // Update appointment handler (to be used after save in modal)
+  const handleUpdate = (updated) => {
+    setBookings((prev) =>
+      prev.map((b) => (b._id === updated._id ? updated : b)),
+    );
+  };
 
-            <div className="flex items-center bg-surface-container-low p-1.5 rounded-xl w-fit">
-              <button
-                className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "bookings" ? "bg-surface-container text-primary font-semibold" : "text-on-surface-variant hover:bg-surface-variant/30"}`}
-                onClick={() => setActiveTab("bookings")}
-              >
-                My Bookings
-              </button>
-              <button
-                className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "profile" ? "bg-surface-container text-primary font-semibold" : "text-on-surface-variant hover:bg-surface-variant/30"}`}
-                onClick={() => setActiveTab("profile")}
-              >
-                My Profile
-              </button>
-            </div>
+  return (
+    <div className="bg-background text-on-background font-body-md min-h-screen">
+      <main className="pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-screen pt-12 flex flex-col items-center">
+        <div className="mb-8 text-center flex flex-col items-center">
+          <h1 className="font-headline-lg text-headline-lg text-on-surface mb-6">
+            Dashboard
+          </h1>
+
+          <div className="flex items-center bg-surface-container-low p-1.5 rounded-xl w-fit">
+            <button
+              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${
+                activeTab === "bookings"
+                  ? "bg-surface-container text-primary font-semibold"
+                  : "text-on-surface-variant hover:bg-surface-variant/30"
+              }`}
+              onClick={() => setActiveTab("bookings")}
+            >
+              My Bookings
+            </button>
+            <button
+              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${
+                activeTab === "profile"
+                  ? "bg-surface-container text-primary font-semibold"
+                  : "text-on-surface-variant hover:bg-surface-variant/30"
+              }`}
+              onClick={() => setActiveTab("profile")}
+            >
+              My Profile
+            </button>
           </div>
+        </div>
 
-          {activeTab === "bookings" && (
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-gutter lg:grid-cols-2 max-w-4xl mx-auto w-full">
-              {bookings.map((booking, index) => (
-                <BookingCard key={index} {...booking} />
-              ))}
-            </section>
-          )}
+        {/* Bookings Tab */}
+        {activeTab === "bookings" && (
+          <section className="w-full max-w-4xl mx-auto">
+            {loadingBookings ? (
+              <div className="flex justify-center py-12">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+              </div>
+            ) : bookings.length === 0 ? (
+              <div className="text-center py-12 text-on-surface-variant">
+                <p className="text-body-lg">No bookings yet.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                {bookings.map((booking) => (
+                  <BookingCard
+                    key={booking._id}
+                    booking={booking}
+                    onDelete={handleDelete}
+                    onUpdate={handleUpdate}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
 
-          {activeTab === "profile" && (
-            <section className="w-full">
-              <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-sm border border-surface-container-high max-w-2xl mx-auto">
-                <div className="flex items-center mb-8 pb-8 border-b border-surface-variant text-center flex-col">
-                  <div className="relative">
-                    <Image
-                      alt="User Profile"
-                      className="rounded-full bg-primary-container object-cover border-4 border-surface-container-lowest shadow-md"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZvuEnlX2Lp27BL_oH0XxHzHzJxY6l_YMYsrOQtLc9x8d-6xra51vUzbML9O75cFmhVblPXmFdDdjXn_aQrOEJga_ctX-t5SNgJets3bzKt7RlREDFzRqOw7Y2Jf4tDsgQw7IOo2TSmcoMsFj31AZkpSgIbLDNMZcpe-0CHgpr37_3HFnRfQbJJV6y8q_vr7v_IsdCHag-JdH5YUDNXRDEjaQB5QFmaeQTWO4AetPR9LcUeaZ8X7xyLig-L9RE5RF1_NSfyx8pC4Cc"
-                      width={80}
-                      height={80}
-                    />
-                    <div className="ml-6 mt-4">
-                      <h2 className="font-headline-md text-headline-md text-on-surface">
-                        User
-                      </h2>
-                      <p className="text-on-surface-variant font-body-md">
-                        Verified Patient ID: #29481
-                      </p>
-                    </div>
+        {/* Profile Tab */}
+        {activeTab === "profile" && user && (
+          <section className="w-full max-w-2xl mx-auto">
+            <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-sm border border-surface-container-high">
+              <div className="flex flex-col items-center mb-8 pb-8 border-b border-surface-variant">
+                <div className="relative mb-4">
+                  <img
+                    alt="User Profile"
+                    className="..."
+                    src={user.image || "/default-avatar.png"}
+                    width={80}
+                    height={80}
+                  />
+                </div>
+                <h2 className="font-headline-md text-headline-md text-on-surface">
+                  {user.name || "User"}
+                </h2>
+                <p className="text-on-surface-variant font-body-md">
+                  {user.email}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1">
+                  <label className="font-label-md text-label-md text-on-surface-variant">
+                    Full Name
+                  </label>
+                  <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">
+                    {user.name || "Not set"}
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-1">
-                      <label className="font-label-md text-label-md text-on-surface-variant">
-                        Full Name
-                      </label>
-                      <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">
-                        User
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-md text-label-md text-on-surface-variant">
-                        Email Address
-                      </label>
-                      <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">
-                        user.user@example.com
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-10 flex justify-center w-full">
-                    <button
-                      className="bg-primary text-on-primary px-8 py-3 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all"
-                      onClick={() => setIsProfileModalOpen(true)}
-                    >
-                      Update Profile
-                    </button>
+                </div>
+                <div className="space-y-1">
+                  <label className="font-label-md text-label-md text-on-surface-variant">
+                    Email Address
+                  </label>
+                  <div className="font-body-md text-on-surface py-2 border-b border-surface-variant/50">
+                    {user.email}
                   </div>
                 </div>
               </div>
-            </section>
-          )}
-        </main>
+              <div className="mt-10 flex justify-center">
+                <button
+                  className="bg-primary text-on-primary px-8 py-3 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all"
+                  onClick={() => setIsProfileModalOpen(true)}
+                >
+                  Update Profile
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
 
-        <UpdateProfileModal
-          isOpen={isProfileModalOpen}
-          onClose={() => setIsProfileModalOpen(false)}
-          initialName="Gfadsgh User"
-          initialImage="https://lh3.googleusercontent.com/aida-public/AB6AXuBZvuEnlX2Lp27BL_oH0XxHzHzJxY6l_YMYsrOQtLc9x8d-6xra51vUzbML9O75cFmhVblPXmFdDdjXn_aQrOEJga_ctX-t5SNgJets3bzKt7RlREDFzRqOw7Y2Jf4tDsgQw7IOo2TSmcoMsFj31AZkpSgIbLDNMZcpe-0CHgpr37_3HFnRfQbJJV6y8q_vr7v_IsdCHag-JdH5YUDNXRDEjaQB5QFmaeQTWO4AetPR9LcUeaZ8X7xyLig-L9RE5RF1_NSfyx8pC4Cc"
-        />
-      </div>
-    );
+      <UpdateProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        initialName={user?.name || ""}
+        initialImage={user?.image || ""}
+        user={user} // pass full user for update API
+      />
+    </div>
+  );
 };
 
 export default DashboardPage;
