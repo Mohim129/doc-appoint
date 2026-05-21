@@ -46,7 +46,7 @@ const HeroSection = () => {
             Browse Doctors
           </Link>
           <Link
-            href="/my-bookings"
+            href="/dashboard"
             className="flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl font-label-md hover:bg-white/20 transition-all active:scale-95"
           >
             <FontAwesomeIcon className="w-4 h-4" icon={faCalendar} />

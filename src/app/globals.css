@@ -136,6 +136,9 @@
     margin-bottom: 1.5rem;
 }
 
+html {
+  color-scheme: light;
+}
 body {
     background-color: var(--color-background);
     color: var(--color-on-surface);
@@ -145,6 +148,7 @@ body {
 }
 
 html.dark {
+  color-scheme: dark;
   --color-outline: #928f9c;
   --color-on-surface: #e0e2eb;
   --color-on-secondary-fixed: #ffdada;

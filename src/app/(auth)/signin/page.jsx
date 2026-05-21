@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 import toast from "react-hot-toast";
@@ -224,4 +224,16 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default function SignInPageWithSuspense() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-background px-margin-mobile md:px-margin-desktop">
+        <div className="w-full max-w-md bg-surface-container-lowest p-8 rounded-2xl shadow-md border border-outline-variant/30 flex justify-center items-center py-20">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+      </div>
+    }>
+      <SignInPage />
+    </Suspense>
+  );
+}

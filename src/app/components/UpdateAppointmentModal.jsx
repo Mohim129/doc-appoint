@@ -119,7 +119,7 @@ const UpdateAppointmentModal = ({ isOpen, onClose, appointment, onUpdate }) => {
                 Date
               </label>
               <input
-                className="w-full bg-surface-container-lowest border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none border text-on-surface"
+                className="w-full bg-surface-container-lowest border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none border text-on-surface [color-scheme:light] dark:[color-scheme:dark]"
                 id="appointmentDate"
                 name="appointmentDate"
                 type="date"
@@ -136,7 +136,7 @@ const UpdateAppointmentModal = ({ isOpen, onClose, appointment, onUpdate }) => {
                 Time
               </label>
               <input
-                className="w-full bg-surface-container-lowest border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none border text-on-surface"
+                className="w-full bg-surface-container-lowest border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none border text-on-surface [color-scheme:light] dark:[color-scheme:dark]"
                 id="appointmentTime"
                 name="appointmentTime"
                 type="time"

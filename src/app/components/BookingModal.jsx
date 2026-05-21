@@ -125,7 +125,7 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
             </label>
             <input
               name="patientName"
-              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest text-on-surface"
               placeholder="Full name"
               required
               type="text"
@@ -139,7 +139,7 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
             </label>
             <select
               name="gender"
-              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest"
+              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest text-on-surface"
               required
               defaultValue=""
             >
@@ -159,7 +159,7 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
             </label>
             <input
               name="phone"
-              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest text-on-surface"
               placeholder="01XXXXXXXXX"
               required
               type="tel"
@@ -173,7 +173,7 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
             </label>
             <input
               name="appointmentDate"
-              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest text-on-surface [color-scheme:light] dark:[color-scheme:dark]"
               required
               type="date"
             />
@@ -186,7 +186,7 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
             </label>
             <input
               name="appointmentTime"
-              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest text-on-surface [color-scheme:light] dark:[color-scheme:dark]"
               required
               type="time"
             />
@@ -199,7 +199,7 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
             </label>
             <textarea
               name="reason"
-              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-surface-container-lowest text-on-surface"
               placeholder="Brief reason for visit"
               rows="3"
             ></textarea>
