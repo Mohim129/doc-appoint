@@ -1,13 +1,23 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useSession } from '@/lib/auth-client';
 import BookingCard from '@/app/components/BookingCard';
 import UpdateProfileModal from '@/app/components/UpdateProfileModal';
 
 const DashboardPage = () => {
+    const router = useRouter();
+    const { data: session, isPending } = useSession();
     const [activeTab, setActiveTab] = useState('bookings');
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+    useEffect(() => {
+      if (!isPending && !session) {
+        router.replace('/signin?callbackUrl=/dashboard');
+      }
+    }, [isPending, session, router]);
 
     const bookings = [
         {

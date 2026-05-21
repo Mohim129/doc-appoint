@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { useSearchParams, useRouter } from "next/navigation";
+import { signIn } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const SignInPage = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [errors, setErrors] = useState({});
@@ -15,7 +17,6 @@ const SignInPage = () => {
     const newErrors = {};
     const email = formData.get("email");
     const password = formData.get("password");
-
     if (!email || !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email))
       newErrors.email = "Invalid email address";
     if (!password) newErrors.password = "Password is required";
@@ -32,26 +33,26 @@ const SignInPage = () => {
 
     const userData = Object.fromEntries(formData.entries());
 
-    const { data, error } = await authClient.signIn.email({
+    const { data, error } = await signIn.email({
       email: userData.email,
       password: userData.password,
       rememberMe: true,
-      // callbackURL: '/'  // will be handled by router.push
+      callbackURL: callbackUrl,
     });
 
     if (error) {
       toast.error(error.message || "Sign in failed");
     } else if (data) {
       toast.success("Signed in successfully!");
-      router.push("/");
+      router.push(callbackUrl);
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
-      await authClient.signIn.social({
+      await signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: callbackUrl,
       });
     } catch (err) {
       toast.error("Google sign in failed");
