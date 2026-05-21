@@ -1,49 +1,50 @@
-import React from 'react';
-import DoctorsCard from './DoctorsCard';
+"use client";
+
+import React, { useState, useEffect } from "react";
+import DoctorsCard from "./DoctorsCard";
+// import Loading from "@/app/components/Loading"; // adjust path to your Loading component
+
+const apiBase = process.env.NEXT_PUBLIC_API_URL;
 
 const TopDoctorsSection = () => {
-  const doctors = [
-    {
-      name: "Dr. Ayesha Rahman",
-      specialty: "Cardiologist",
-      description: "Highly experienced cardiologist specializing in heart diseases, preventive care, and patient-centered treatment.",
-      location: "Dhanmondi, Dhaka",
-      experience: "10 years experience",
-      price: "৳800",
-      rating: "4.9",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCCwePlI-FE0Vt0L0UGcyz0QRIM_JHijNLZzovzx9x3tJbRigSc3yDvApM4egpvZAzRM_0LNw77gQpcF2kPxLE-wpU5HazXnnix2YXku1gMGpbhoEz6FFHnUU_62T3TqOkQ9cb24lFPAczCWx03BeSe1OYYfGM7n7ZM6KCPXZk_BttECseXudPL1H_A72buOv82Hyvqp-qFCTP4B_dqYT_yA-Vzpr3uojLtWcy1CnwnK1KmJPJ6wLu03OxS8PB2qwpMDy_r8-YwKRTj"
-    },
-    {
-      name: "Dr. Nadia Akter",
-      specialty: "Dermatologist",
-      description: "Skin specialist offering acne treatment, laser therapy, and cosmetic dermatology with personalized care.",
-      location: "Bashundhara, Dhaka",
-      experience: "8 years experience",
-      price: "৳700",
-      rating: "4.9",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCTLWNsxy73zsp9ngshiTI5u1dww81q9g9SG2k3y4K_Ii-tvO4A0aRZKhYxQdJfdk5DOaYlMQMSdd7vjfBJLcYsmqcS8wbsIBZMh080jzZSb1rv-iZFfz88eS5VYUm8NPzfJVy9ogV_32wuzm6MVN2-yYkGy-YjW-Cu4kT7UK9YxVVXycjuShUlss6QXyBxmCplXdVde6md1LWVvo4DcsbsTGd0cz6JV0xn8qfkwUpJYNVK0NR9q9BsFfXAukDawM8FatFWRA1gv32o"
-    },
-    {
-      name: "Dr. Imran Hossain",
-      specialty: "Neurologist",
-      description: "Neurology consultant with expertise in stroke care, epilepsy management, and headache disorders.",
-      location: "Panthapath, Dhaka",
-      experience: "12 years experience",
-      price: "৳1000",
-      rating: "4.8",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDyjD8gUdSJNi7TCEi72kJ1e3OsdLlbqjzP8Mwzr3uYpugUHTOKhYBT0n18-G65pzuc6D2049_l_ezyxdK_2Cu2vdcMhjCBc_loGsiZBc9cYK-SE3wbJ01Ed-F5HeBoLdZ9MFnhVdxb7D2sg5eMxv8A9BKmIS1pBhg_7BAWI9VPBvGuaY_Y-HxFYxzM7ad2Ds0JS4uqn0QOut-0O2yGbkl4qCVZdvA2cYJB_26oWjy8RDlZPVPbPD_Ygms45DpN5iCV7h_eYC0rYKsn"
-    }
-  ];
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTopDoctors = async () => {
+      try {
+        const res = await fetch(`${apiBase}/doctors`);
+        if (!res.ok) throw new Error("Failed to fetch doctors");
+        const data = await res.json();
+
+        const topRated = data
+          .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+          .slice(0, 3);
+        setDoctors(topRated);
+      } catch (err) {
+        console.error("Error fetching top doctors:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTopDoctors();
+  }, []);
+
+  // if (loading) return <Loading />;
 
   return (
     <section className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto">
       <div className="text-center mb-12">
-        <h2 className="font-headline-lg text-headline-lg text-on-surface mb-2">Top Rated Doctors</h2>
-        <p className="font-body-md text-body-md text-on-surface-variant">Highly reviewed specialists ready to see you.</p>
+        <h2 className="font-headline-lg text-headline-lg text-on-surface mb-2">
+          Top Rated Doctors
+        </h2>
+        <p className="font-body-md text-body-md text-on-surface-variant">
+          Highly reviewed specialists ready to see you.
+        </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-        {doctors.map((doctor, index) => (
-          <DoctorsCard key={index} doctor={doctor} />
+        {doctors.map((doctor) => (
+          <DoctorsCard key={doctor._id} doctor={doctor} />
         ))}
       </div>
     </section>

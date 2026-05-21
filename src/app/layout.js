@@ -1,8 +1,7 @@
 import React from "react";
-import Script from "next/script";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+// import Header from "@/app/components/Header";
+// import Footer from "@/app/components/Footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -33,9 +32,10 @@ const RootLayout = ({ children }) => {
       <body
         className={`${inter.variable} ${plusJakarta.variable} antialiased bg-background text-on-surface font-body-md`}
       >
-        <Script
-          id="theme-init"
-          strategy="beforeInteractive"
+        {/* <Header /> */}
+        <main>{children}</main>
+        {/* <Footer /> */}
+        <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -52,9 +52,6 @@ const RootLayout = ({ children }) => {
             `,
           }}
         />
-        <Header />
-        <main>{children}</main>
-        <Footer />
       </body>
     </html>
   );

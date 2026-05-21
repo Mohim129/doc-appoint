@@ -39,10 +39,10 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-[1280px] mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
-      <div className="flex items-center gap-2">
+      <Link className="flex items-center gap-2" href="/">
         <span className="material-symbols-outlined text-primary text-3xl" data-icon="medical_services">medical_services</span>
         <span className="text-headline-md font-headline-md font-bold text-primary">DocAppoint</span>
-      </div>
+      </Link>
       <nav className="hidden md:flex items-center gap-8">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
