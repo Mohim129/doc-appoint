@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
+import { useSession, authClient } from "@/lib/auth-client";
 import BookingCard from "@/app/components/BookingCard";
 import UpdateProfileModal from "@/app/components/UpdateProfileModal";
 import toast from "react-hot-toast";
@@ -31,8 +31,19 @@ const DashboardPage = () => {
     if (!user) return;
     const fetchAppointments = async () => {
       try {
+        const tokenResponse = await authClient.token().catch(() => null);
+        const token = tokenResponse?.data?.token;
+
+        const headers = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        console.log("Token in DashboardPage:", token);
+
         const res = await fetch(
           `${apiBase}/appointments?userEmail=${encodeURIComponent(user.email)}`,
+          { headers }
         );
         if (!res.ok) throw new Error("Failed to fetch appointments");
         const data = await res.json();
@@ -50,8 +61,17 @@ const DashboardPage = () => {
   // Delete appointment handler (passed to BookingCard)
   const handleDelete = async (id) => {
     try {
+      const tokenResponse = await authClient.token().catch(() => null);
+      const token = tokenResponse?.data?.token;
+
+      const headers = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch(`${apiBase}/appointments/${id}`, {
         method: "DELETE",
+        headers,
       });
       if (!res.ok) throw new Error("Delete failed");
       setBookings((prev) => prev.filter((b) => b._id !== id));

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL;
@@ -28,9 +29,19 @@ const UpdateAppointmentModal = ({ isOpen, onClose, appointment, onUpdate }) => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const tokenResponse = await authClient.token().catch(() => null);
+      const token = tokenResponse?.data?.token;
+
+      const headers = { 
+        "Content-Type": "application/json" 
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch(`${apiBase}/appointments/${appointment._id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           patientName: form.patientName,
           appointmentDate: form.appointmentDate,

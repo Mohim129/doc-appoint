@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSession } from "@/lib/auth-client";
+import { useSession, authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL;
@@ -44,9 +44,20 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
     };
 
     try {
+      // Get JWT token from Better Auth client
+      const tokenResponse = await authClient.token().catch(() => null);
+      const token = tokenResponse?.data?.token;
+
+      const headers = { 
+        "Content-Type": "application/json" 
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch(`${apiBase}/appointments`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(appointmentData),
       });
 
