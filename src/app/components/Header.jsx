@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const pathname = usePathname();
@@ -36,6 +37,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     await signOut({ callbackURL: "/" });
+    toast.success("Logged out successfully!");
   };
 
   // Build navigation links – Dashboard only for authenticated users

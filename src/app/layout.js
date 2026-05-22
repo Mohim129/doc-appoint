@@ -2,6 +2,7 @@ import React from "react";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 // import Header from "@/app/components/Header";
 // import Footer from "@/app/components/Footer";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const inter = Inter({
@@ -35,6 +36,7 @@ const RootLayout = ({ children }) => {
         {/* <Header /> */}
         <main>{children}</main>
         {/* <Footer /> */}
+        <Toaster/>
         <script
           dangerouslySetInnerHTML={{
             __html: `
