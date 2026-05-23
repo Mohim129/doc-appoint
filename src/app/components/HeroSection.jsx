@@ -47,7 +47,7 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-[600px] lg:h-[600px] w-full overflow-hidden bg-[#181c22]">
       <Swiper
-        modules={[Autoplay, EffectFade,  Pagination]}
+        modules={[Autoplay, EffectFade]}
         effect="fade"
         speed={1000}
         autoplay={{
