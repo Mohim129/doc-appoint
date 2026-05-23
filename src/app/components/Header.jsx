@@ -96,18 +96,24 @@ const Header = () => {
           <div className="hidden md:flex items-center gap-3 pl-4 border-l border-outline-variant">
             {user ? (
               <>
-                <img
-                  src={
-                    user.image ||
-                    "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
-                  }
-                  alt="User avatar"
-                  className="w-10 h-10 rounded-full border-2 border-primary-fixed object-cover"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg";
-                  }}
-                />
+                <div className="flex items-center gap-2">
+                  <img
+                    src={
+                      user.image ||
+                      "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
+                    }
+                    alt="User avatar"
+                    className="w-10 h-10 rounded-full border-2 border-primary-fixed object-cover"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg";
+                    }}
+                  />
+                  <p className="font-label-md text-label-md text-on-surface">
+                    {user.name}
+                  </p>
+                </div>
                 <button
                   onClick={handleLogout}
                   className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-all active:scale-95"
