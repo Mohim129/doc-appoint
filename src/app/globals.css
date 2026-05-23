@@ -196,3 +196,75 @@ html.dark {
   --color-on-error: #690005;
   --color-secondary-fixed-dim: #ffdad9;
 }
+
+/* Swiper.js Custom Styles */
+.swiper-pagination-bullet {
+  background: white !important;
+  opacity: 0.45 !important;
+  width: 8px !important;
+  height: 8px !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #c8bfff !important; /* Premium light indigo/violet to match primary-fixed-dim */
+  opacity: 1 !important;
+  width: 24px !important;
+  border-radius: 4px !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important;
+  background: rgba(24, 28, 34, 0.45) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background: rgba(94, 82, 167, 0.85) !important; /* Primary color fallback */
+  border-color: rgba(200, 191, 255, 0.6) !important;
+  transform: scale(1.05) translateY(-50%) !important;
+}
+
+/* Fix Swiper translation for absolute centering */
+.swiper-button-prev {
+  left: 24px !important;
+}
+
+.swiper-button-next {
+  right: 24px !important;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+}
+
+.swiper-button-disabled {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+

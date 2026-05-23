@@ -122,12 +122,20 @@ const Header = () => {
                 </button>
               </>
             ) : (
+              <div className="flex items-center gap-2">
               <Link
                 href="/signin"
                 className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-all active:scale-95"
               >
                 Login
               </Link>
+              <Link
+                href="/signup"
+                className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-all active:scale-95"
+              >
+                Register
+              </Link>
+              </div>
             )}
           </div>
         )}
@@ -191,6 +199,7 @@ const Header = () => {
                     Logout
                   </button>
                 ) : (
+                  <div className="">
                   <Link
                     href="/signin"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -198,6 +207,14 @@ const Header = () => {
                   >
                     Login
                   </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="bg-primary text-on-primary w-full py-3 rounded-lg font-label-md text-label-md hover:bg-surface-tint mt-2 active:scale-95 transition-all block text-center"
+                  >
+                    Register
+                  </Link>
+                  </div>
                 )}
               </div>
             )}
