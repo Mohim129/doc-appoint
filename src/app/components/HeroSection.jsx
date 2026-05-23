@@ -9,12 +9,11 @@ import Link from 'next/link';
 
 // Swiper imports
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
 
 // Swiper styles
 import 'swiper/css';
 import 'swiper/css/effect-fade';
-import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const HeroSection = () => {
@@ -29,25 +28,26 @@ const HeroSection = () => {
     },
     {
       bg: "https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1",
-      badge: "MODERN CLINIC & TECH",
-      icon: "medical_services",
-      title: "Advanced Medical Care",
+      badge: "24/7 SUPPORT & CARE",
+      icon: "support_agent",
+      title: "Your Health, Our Priority",
       description:
-        "Experience state-of-the-art diagnostic facilities and highly personalized medical treatment plans.",
+        "Connect with certified specialists online or in-person. Get professional consultations at your convenience.",
     },
     {
-      bg: "https://images.pexels.com/photos/7089401/pexels-photo-7089401.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1",
-      badge: "TRUSTED BY FAMILIES",
-      icon: "groups",
-      title: "Compassionate Care for Every Family",
-      description: "From routine checkups to specialized treatments, our network of trusted physicians is here to support your family's health journey."
+      bg: "https://images.pexels.com/photos/3825368/pexels-photo-3825368.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1",
+      badge: "SPECIALIZED MEDICAL UNITS",
+      icon: "health_and_safety",
+      title: "Advanced Diagnostic Care",
+      description:
+        "Access state-of-the-art laboratory facilities and highly personalized, expert medical treatment plans.",
     },
   ];
 
   return (
     <section className="relative min-h-[600px] lg:h-[600px] w-full overflow-hidden bg-[#181c22]">
       <Swiper
-        modules={[Autoplay, EffectFade]}
+        modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
         speed={1000}
         autoplay={{
@@ -57,7 +57,6 @@ const HeroSection = () => {
         pagination={{
           clickable: true,
         }}
-        navigation={true}
         loop={true}
         className="h-full min-h-[600px] lg:h-[600px]"
       >
@@ -88,11 +87,11 @@ const HeroSection = () => {
                   {slide.badge}
                 </span>
               </div>
-              
+
               <h1 className="font-display-lg text-display-lg mb-4 max-w-2xl animate-fade-in-up font-bold tracking-tight text-white">
                 {slide.title}
               </h1>
-              
+
               <p className="font-body-lg text-body-lg text-white/90 mb-10 max-w-xl animate-fade-in-up">
                 {slide.description}
               </p>
