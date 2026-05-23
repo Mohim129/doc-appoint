@@ -98,19 +98,21 @@ const DashboardPage = () => {
 
           <div className="flex items-center bg-surface-container-low p-1.5 rounded-xl w-fit">
             <button
-              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "bookings"
-                ? "bg-surface-container text-primary font-semibold"
-                : "text-on-surface-variant hover:bg-surface-variant/30"
-                }`}
+              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${
+                activeTab === "bookings"
+                  ? "bg-surface-container text-primary font-semibold"
+                  : "text-on-surface-variant hover:bg-surface-variant/30"
+              }`}
               onClick={() => setActiveTab("bookings")}
             >
               My Bookings
             </button>
             <button
-              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "profile"
-                ? "bg-surface-container text-primary font-semibold"
-                : "text-on-surface-variant hover:bg-surface-variant/30"
-                }`}
+              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${
+                activeTab === "profile"
+                  ? "bg-surface-container text-primary font-semibold"
+                  : "text-on-surface-variant hover:bg-surface-variant/30"
+              }`}
               onClick={() => setActiveTab("profile")}
             >
               My Profile
@@ -150,7 +152,10 @@ const DashboardPage = () => {
                   <img
                     alt="User Profile"
                     className="..."
-                    src={user.image || "/default-avatar.png"}
+                    src={
+                      user.image ||
+                      "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
+                    }
                     width={80}
                     height={80}
                   />

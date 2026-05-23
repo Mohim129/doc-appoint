@@ -10,7 +10,7 @@ const DoctorsCard = ({ doctor }) => {
           src={doctor.image}
           alt={doctor.name}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
           <span
@@ -66,7 +66,10 @@ const DoctorsCard = ({ doctor }) => {
               {doctor.price}
             </span>
           </div>
-          <Link href={`/all-appointments/${doctor._id}`} className="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-all active:scale-95 shadow-sm block text-center">
+          <Link
+            href={`/all-appointments/${doctor._id}`}
+            className="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md text-label-md hover:bg-surface-tint transition-all active:scale-95 shadow-sm block text-center"
+          >
             View Details
           </Link>
         </div>

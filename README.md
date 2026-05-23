@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DocAppoint – Doctor Appointment Manager
 
-## Getting Started
+**Live Site:** [https://doc-appoint-umber.vercel.app](https://doc-appoint-umber.vercel.app)
 
-First, run the development server:
+DocAppoint is a modern, full‑stack web application that allows patients to browse doctors, view detailed profiles, and book appointments online. Built with **Next.js 16** (App Router) and **Tailwind CSS**, it offers a fast, responsive, and accessible experience. Authentication is handled by **Better Auth** using JWT tokens, supporting both email/password and Google OAuth. All data is stored in **MongoDB** and served by a dedicated **Express.js** backend.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. **Doctor Discovery & Search**  
+   Browse all available specialists in a responsive card grid. Use the real‑time search bar to filter doctors by name instantly. Each card shows a photo, rating, specialty, location, and fee, with a “View Details” button.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Top‑Rated Doctors Section**  
+   The home page dynamically fetches and displays the three highest‑rated doctors, helping patients quickly find trusted care. Ratings are calculated from real patient reviews stored in the database.
 
-## Learn More
+3. **Detailed Doctor Profiles**  
+   Clicking on a doctor opens a dedicated profile page showing all relevant information: specialty, years of experience, hospital, location, consultation fee, availability slots, and a full description. A prominent “Book Appointment” button is provided.
 
-To learn more about Next.js, take a look at the following resources:
+4. **Seamless Appointment Booking**  
+   A modal‑based form allows users to enter patient name, gender, phone, preferred date, and time. The booking is validated on the client and then saved to MongoDB with the logged‑in user’s email attached automatically. Success is shown via a toast notification.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Personal Dashboard**  
+   Authenticated users have a private dashboard with two tabs:
+    - **My Bookings** – Lists all appointments made by the user. Each booking card includes doctor name, patient details, date, and time. Users can **update** (modify patient name, date, or time) via a pre‑filled modal, or **delete** the appointment. All changes reflect instantly without page reload.
+    - **My Profile** – Displays the user’s name, email, and profile picture. An “Update Profile” button opens a modal to change the display name and photo URL; changes are persisted via Better Auth.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. **Secure Authentication**  
+   Full authentication flow with **email/password registration** (with client‑side password strength validation: minimum 6 characters, at least one uppercase and one lowercase) and **Google OAuth** sign‑in. Better Auth manages JWT‑based sessions stored in HTTP‑only cookies. Sessions persist across page reloads – logged‑in users are never redirected to the login page when refreshing private routes. Unauthenticated users are automatically redirected to the sign‑in page when trying to access protected areas (Dashboard, Booking).
 
-## Deploy on Vercel
+7. **Profile Management**  
+   Users can update their display name and profile image directly from the dashboard. The update is sent to Better Auth’s user management API, and the UI reflects changes immediately without a full page reload.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+8. **Responsive & Themed UI**  
+   The entire interface is built with a custom design system using **Tailwind CSS**. It features a consistent colour palette, typography scale, and spacing utilities. The layout is fully responsive for mobile, tablet, and desktop. A theme toggle (light/dark) is available in the header, with the preference persisted in localStorage.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+9. **Toast Notifications**  
+   All user interactions (booking, updating, deleting, login, registration, profile changes) produce polished toast messages using `react-hot-toast`. No default browser alerts are used.
+
+10. **Custom 404 Page**  
+    Any invalid route displays a friendly “Page Not Found” message with a link back to the home page, ensuring a smooth user experience even when lost.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer             | Technology                                           |
+|-------------------|------------------------------------------------------|
+| Frontend          | Next.js 16 (App Router), React                       |
+| Styling           | Tailwind CSS, custom design tokens                   |
+| Authentication    | Better Auth (JWT + Google OAuth)                     |
+| Icons             | Material Symbols, FontAwesome                        |
+| Notifications     | React Hot Toast                                      |
+| Backend (separate)| Express.js, MongoDB, JWT verification, cookie-parser |
+
+---
+
+## 🔧 Environment Variables
+
+Create a `.env` file in the client root with the following keys:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+BETTER_AUTH_SECRET=your-random-secret
+BETTER_AUTH_URL=http://localhost:3000
+MONGODB_URI=mongodb+srv://...
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
