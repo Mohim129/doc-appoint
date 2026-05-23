@@ -1,10 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL;
+
+async function getAuthToken() {
+  try {
+    const res = await fetch("/api/auth-token");
+    if (!res.ok) return null;
+    const { token } = await res.json();
+    return token;
+  } catch {
+    return null;
+  }
+}
 
 const UpdateAppointmentModal = ({ isOpen, onClose, appointment, onUpdate }) => {
   const [form, setForm] = useState({
@@ -14,7 +24,6 @@ const UpdateAppointmentModal = ({ isOpen, onClose, appointment, onUpdate }) => {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  // Prefill when modal opens – but don't sync back to initial appointment (avoid effect warning)
   useEffect(() => {
     if (isOpen && appointment) {
       setForm({
@@ -29,19 +38,13 @@ const UpdateAppointmentModal = ({ isOpen, onClose, appointment, onUpdate }) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const tokenResponse = await authClient.token().catch(() => null);
-      const token = tokenResponse?.data?.token;
-
-      const headers = { 
-        "Content-Type": "application/json" 
-      };
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
+      const token = await getAuthToken();
       const res = await fetch(`${apiBase}/appointments/${appointment._id}`, {
         method: "PUT",
-        headers,
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           patientName: form.patientName,
           appointmentDate: form.appointmentDate,
@@ -49,9 +52,8 @@ const UpdateAppointmentModal = ({ isOpen, onClose, appointment, onUpdate }) => {
         }),
       });
       if (!res.ok) throw new Error("Update failed");
-      const data = await res.json();
       toast.success("Appointment updated successfully!");
-      onUpdate({ ...appointment, ...form }); // update locally
+      onUpdate({ ...appointment, ...form });
       onClose();
     } catch (err) {
       toast.error(err.message || "Failed to update");

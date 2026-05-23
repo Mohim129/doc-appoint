@@ -2,12 +2,25 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSession, authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import BookingCard from "@/app/components/BookingCard";
 import UpdateProfileModal from "@/app/components/UpdateProfileModal";
 import toast from "react-hot-toast";
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL;
+
+// Helper: get the session JWT from our Next.js API route
+// (the httpOnly cookie can't be read by client JS directly)
+async function getAuthToken() {
+  try {
+    const res = await fetch("/api/auth-token");
+    if (!res.ok) return null;
+    const { token } = await res.json();
+    return token;
+  } catch {
+    return null;
+  }
+}
 
 const DashboardPage = () => {
   const router = useRouter();
@@ -19,33 +32,26 @@ const DashboardPage = () => {
   const [loadingBookings, setLoadingBookings] = useState(true);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
-  // Redirect if not logged in
   useEffect(() => {
     if (!isPending && !user) {
       router.replace("/signin?callbackUrl=/dashboard");
     }
   }, [isPending, user, router]);
 
-  // Fetch user's appointments
   useEffect(() => {
     if (!user) return;
     const fetchAppointments = async () => {
       try {
-        const tokenResponse = await authClient.token().catch(() => null);
-        const token = tokenResponse?.data?.token;
-
-        const headers = {};
-        if (token) {
-          headers["Authorization"] = `Bearer ${token}`;
-        }
-
+        const token = await getAuthToken();
         console.log("Token in DashboardPage:", token);
 
-        const res = await fetch(
-          `${apiBase}/appointments?userEmail=${encodeURIComponent(user.email)}`,
-          { headers }
-        );
-        if (!res.ok) throw new Error("Failed to fetch appointments");
+        const res = await fetch(`${apiBase}/appointments`, {
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+        console.log("Appointments response status:", res.status);
+        if (!res.ok) throw new Error(`Failed to fetch appointments (${res.status})`);
         const data = await res.json();
         setBookings(data);
       } catch (err) {
@@ -58,20 +64,14 @@ const DashboardPage = () => {
     fetchAppointments();
   }, [user]);
 
-  // Delete appointment handler (passed to BookingCard)
   const handleDelete = async (id) => {
     try {
-      const tokenResponse = await authClient.token().catch(() => null);
-      const token = tokenResponse?.data?.token;
-
-      const headers = {};
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
+      const token = await getAuthToken();
       const res = await fetch(`${apiBase}/appointments/${id}`, {
         method: "DELETE",
-        headers,
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       });
       if (!res.ok) throw new Error("Delete failed");
       setBookings((prev) => prev.filter((b) => b._id !== id));
@@ -82,7 +82,6 @@ const DashboardPage = () => {
     }
   };
 
-  // Update appointment handler (to be used after save in modal)
   const handleUpdate = (updated) => {
     setBookings((prev) =>
       prev.map((b) => (b._id === updated._id ? updated : b)),
@@ -99,29 +98,25 @@ const DashboardPage = () => {
 
           <div className="flex items-center bg-surface-container-low p-1.5 rounded-xl w-fit">
             <button
-              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${
-                activeTab === "bookings"
-                  ? "bg-surface-container text-primary font-semibold"
-                  : "text-on-surface-variant hover:bg-surface-variant/30"
-              }`}
+              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "bookings"
+                ? "bg-surface-container text-primary font-semibold"
+                : "text-on-surface-variant hover:bg-surface-variant/30"
+                }`}
               onClick={() => setActiveTab("bookings")}
             >
               My Bookings
             </button>
             <button
-              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${
-                activeTab === "profile"
-                  ? "bg-surface-container text-primary font-semibold"
-                  : "text-on-surface-variant hover:bg-surface-variant/30"
-              }`}
+              className={`px-6 py-2.5 rounded-lg font-label-md text-label-md transition-all ${activeTab === "profile"
+                ? "bg-surface-container text-primary font-semibold"
+                : "text-on-surface-variant hover:bg-surface-variant/30"
+                }`}
               onClick={() => setActiveTab("profile")}
             >
               My Profile
             </button>
           </div>
         </div>
-
-        {/* Bookings Tab */}
         {activeTab === "bookings" && (
           <section className="w-full max-w-4xl mx-auto">
             {loadingBookings ? (
@@ -147,7 +142,6 @@ const DashboardPage = () => {
           </section>
         )}
 
-        {/* Profile Tab */}
         {activeTab === "profile" && user && (
           <section className="w-full max-w-2xl mx-auto">
             <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-sm border border-surface-container-high">
@@ -204,7 +198,7 @@ const DashboardPage = () => {
         onClose={() => setIsProfileModalOpen(false)}
         initialName={user?.name || ""}
         initialImage={user?.image || ""}
-        user={user} // pass full user for update API
+        user={user}
       />
     </div>
   );

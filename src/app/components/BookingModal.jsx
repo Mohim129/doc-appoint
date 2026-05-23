@@ -1,10 +1,21 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSession, authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL;
+
+async function getAuthToken() {
+  try {
+    const res = await fetch("/api/auth-token");
+    if (!res.ok) return null;
+    const { token } = await res.json();
+    return token;
+  } catch {
+    return null;
+  }
+}
 
 const BookingModal = ({ isOpen, onClose, doctorName }) => {
   const { data: session } = useSession();
@@ -34,7 +45,6 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
     const form = e.currentTarget;
     const formData = new FormData(form);
     const appointmentData = {
-      userEmail: user?.email, // from session
       doctorName: doctorName,
       patientName: formData.get("patientName"),
       gender: formData.get("gender"),
@@ -44,20 +54,13 @@ const BookingModal = ({ isOpen, onClose, doctorName }) => {
     };
 
     try {
-      // Get JWT token from Better Auth client
-      const tokenResponse = await authClient.token().catch(() => null);
-      const token = tokenResponse?.data?.token;
-
-      const headers = { 
-        "Content-Type": "application/json" 
-      };
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
+      const token = await getAuthToken();
       const res = await fetch(`${apiBase}/appointments`, {
         method: "POST",
-        headers,
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify(appointmentData),
       });
 
