@@ -11,7 +11,7 @@ const Header = () => {
   const [theme, setTheme] = useState("light");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Auth state – correct hook usage
+ 
   const { data, isPending } = useSession();
   const user = data?.user ?? null;
 
@@ -39,8 +39,6 @@ const Header = () => {
     await signOut({ callbackURL: "/" });
     toast.success("Logged out successfully!");
   };
-
-  // Build navigation links – Dashboard only for authenticated users
   const baseLinks = [
     { href: "/", label: "Home" },
     { href: "/all-appointments", label: "All Appointments" },
@@ -62,8 +60,6 @@ const Header = () => {
           DocAppoint
         </span>
       </Link>
-
-      {/* Desktop navigation */}
       <nav className="hidden md:flex items-center gap-8">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
@@ -82,8 +78,6 @@ const Header = () => {
           );
         })}
       </nav>
-
-      {/* Right side: theme toggle + auth buttons */}
       <div className="flex items-center gap-2 md:gap-4">
         <button
           onClick={toggleTheme}
@@ -98,18 +92,20 @@ const Header = () => {
           </span>
         </button>
 
-        {/* Auth section – hidden while loading, then shows appropriate button */}
         {!isPending && (
           <div className="hidden md:flex items-center gap-3 pl-4 border-l border-outline-variant">
             {user ? (
               <>
                 <img
-                  src={user.image || "/default-avatar.png"}
+                  src={
+                    user.image ||
+                    "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
+                  }
                   alt="User avatar"
                   className="w-10 h-10 rounded-full border-2 border-primary-fixed object-cover"
                   referrerPolicy="no-referrer"
                   onError={(e) => {
-                    e.currentTarget.src = "/default-avatar.png";
+                    e.currentTarget.src = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg";
                   }}
                 />
                 <button
@@ -130,7 +126,6 @@ const Header = () => {
           </div>
         )}
 
-        {/* Mobile menu toggle */}
         <button
           className="md:hidden p-2 rounded-full hover:bg-surface-container-low transition-all text-on-surface-variant cursor-pointer ml-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -141,7 +136,6 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-surface shadow-lg border-t border-outline-variant md:hidden">
           <nav className="flex flex-col py-4 px-margin-mobile gap-4">
@@ -178,7 +172,6 @@ const Header = () => {
                 </span>
               </button>
             </div>
-            {/* Mobile auth button */}
             {!isPending && (
               <div className="pt-2">
                 {user ? (
