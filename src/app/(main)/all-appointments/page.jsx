@@ -99,10 +99,8 @@ const AllAppointmentsPage = () => {
       {/* Doctors Grid */}
       <section className="px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto">
         {filteredDoctors.length === 0 ? (
-          <div className="text-center py-12 text-on-surface-variant">
-            <p className="text-body-lg">
-              No doctors found matching {searchQuery}
-            </p>
+          <div className="flex justify-center items-center py-12 text-on-surface-variant">
+            <span className="loading loading-spinner loading-xl"></span>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
