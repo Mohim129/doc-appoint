@@ -2,6 +2,9 @@
 
 **Live Site:** [https://doc-appoint-umber.vercel.app](https://doc-appoint-umber.vercel.app)
 
+![DocAppoint Preview](https://i.ibb.co.com/VFVhhPt/doc-appoint.png)
+
+## About
 DocAppoint is a modern, full‑stack web application that allows patients to browse doctors, view detailed profiles, and book appointments online. Built with **Next.js 16** (App Router) and **Tailwind CSS**, it offers a fast, responsive, and accessible experience. Authentication is handled by **Better Auth** using JWT tokens, supporting both email/password and Google OAuth. All data is stored in **MongoDB** and served by a dedicated **Express.js** backend.
 
 ---
@@ -55,10 +58,24 @@ DocAppoint is a modern, full‑stack web application that allows patients to bro
 
 ---
 
-## 🔧 Environment Variables
+## 🚀 Getting Started
 
-Create a `.env` file in the client root with the following keys:
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/Mohim129/doc-appoint.git](https://github.com/Mohim129/doc-appoint.git)
+   cd doc-appoint
 
+```
+
+2. **Install dependencies**
+```bash
+npm install
+
+```
+
+
+3. **Set up environment variables**
+Create a `.env` file in the root with the following keys:
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000
 BETTER_AUTH_SECRET=your-random-secret
@@ -66,3 +83,28 @@ BETTER_AUTH_URL=http://localhost:3000
 MONGODB_URI=mongodb+srv://...
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+```
+
+
+4. **Run the development server**
+```bash
+npm run dev
+
+```
+
+
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+---
+
+## 📦 Dependencies (Key)
+
+* `next`, `react`, `react-dom`
+* `tailwindcss`
+* `better-auth`
+* `react-hot-toast`
+
+```
+
+```
